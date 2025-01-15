@@ -2,6 +2,8 @@
 import axios from 'axios'
 import { ref } from 'vue'
 
+import QuizzButton from './QuizzButton.vue'
+
 defineProps({
   level: {
     type: String,
@@ -79,29 +81,25 @@ axios.get('http://localhost:8000/quizz?level_eq=1').then((response) => {
   <div class="quizz">
     <div class="language-column">
       <div v-for="{ korean } in quizz" :key="{ korean }">
-        <button
-          @click="selectWord(korean, 'korean')"
-          :class="{
-            selected: selectedWord?.word === korean,
-            completed: completed.includes(korean),
-          }"
-        >
-          {{ korean }}
-        </button>
+        <QuizzButton
+          :word="korean"
+          lang="korean"
+          :isSelected="selectedWord?.word === korean"
+          :isCompleted="completed.includes(korean)"
+          @onClick="selectWord"
+        />
       </div>
     </div>
 
     <div class="language-column">
       <div v-for="{ english } in quizz" :key="{ english }">
-        <button
-          @click="selectWord(english, 'english')"
-          :class="{
-            selected: selectedWord?.word === english,
-            completed: completed.includes(english),
-          }"
-        >
-          {{ english }}
-        </button>
+        <QuizzButton
+          :word="english"
+          lang="english"
+          :isSelected="selectedWord?.word === english"
+          :isCompleted="completed.includes(english)"
+          @onClick="selectWord"
+        />
       </div>
     </div>
   </div>
@@ -116,27 +114,5 @@ axios.get('http://localhost:8000/quizz?level_eq=1').then((response) => {
 
 .language-column {
   width: 45%;
-}
-
-button {
-  display: block;
-  margin: 10px 0;
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-button.selected {
-  background-color: #4caf50;
-}
-
-button.completed {
-  background-color: #05830b52;
-  color: white;
-  border: none;
-}
-
-button:hover {
-  background-color: #4caf50;
 }
 </style>
