@@ -1,20 +1,13 @@
 <script setup>
-import Quizz from './components/Quizz.vue'
+import Quizz from './components/QuizzLink.vue'
 </script>
 
 <template>
-  <header>
-  </header>
+  <header></header>
 
   <main>
-    <Quizz level=1 />
-    <Quizz level=1 />
-    <Quizz level=1 />
-    <Quizz level=1 />
-    <Quizz level=1 />
-    <Quizz level=1 />
+    <Quizz level="1" />
   </main>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>
