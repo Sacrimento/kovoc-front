@@ -1,5 +1,6 @@
 <script setup>
 import QuizzLink from './components/QuizzLink.vue'
+import VocabularyGrid from './components/VocabularyGrid.vue'
 </script>
 
 <template>
@@ -7,6 +8,7 @@ import QuizzLink from './components/QuizzLink.vue'
 
   <main>
     <QuizzLink level="1" />
+    <Suspense><VocabularyGrid /></Suspense>
   </main>
 </template>
 
