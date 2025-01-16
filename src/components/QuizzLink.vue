@@ -3,8 +3,11 @@ import { onMounted, ref } from 'vue'
 
 import QuizzButton from './QuizzButton.vue'
 import { buildQuizzLink } from '@/utils/buildQuizzLink'
+import Spinner from './LoadingSpinner.vue'
 
 defineProps({})
+
+const loadingData = ref(true)
 
 const selectedWord = ref(null)
 const completed = ref([])
@@ -15,6 +18,7 @@ onMounted(async () => {
   let tmp = await buildQuizzLink()
   quizz.value = tmp.quizz
   answers.value = tmp.answers
+  loadingData.value = false
 })
 
 const selectWord = (word, lang) => {
@@ -58,7 +62,10 @@ const checkAnswer = (koreanGuess, englishGuess) => {
 
 <template>
   <h1>Quizz</h1>
-  <div class="quizz">
+  <div v-if="loadingData">
+    <Spinner />
+  </div>
+  <div v-else class="quizz">
     <div class="language-column">
       <div v-for="{ korean } in quizz" :key="{ korean }">
         <QuizzButton

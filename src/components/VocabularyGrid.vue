@@ -1,14 +1,19 @@
 <script setup>
 import { getVocabulary } from '@/utils/api'
 import { ref, onMounted } from 'vue'
+import Spinner from './LoadingSpinner.vue'
 
 const vocab = ref([])
 const currentPage = ref(1)
 const totalPages = ref(0)
 
+const loadingData = ref(true)
+
 const refreshVocab = async () => {
+  loadingData.value = true
   const resp = await getVocabulary(currentPage.value)
   vocab.value = resp.data.items
+  loadingData.value = false
   return resp.data
 }
 
@@ -29,7 +34,10 @@ const prevPage = async () => {
 
 <template>
   <h1>Vocabulary</h1>
-  <div class="items-list">
+  <div v-if="loadingData">
+    <Spinner />
+  </div>
+  <div v-else class="items-list">
     <table>
       <thead>
         <tr>
