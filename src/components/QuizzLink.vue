@@ -1,20 +1,22 @@
 <script setup>
-import axios from 'axios'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 
 import QuizzButton from './QuizzButton.vue'
+import { buildQuizzLink } from '@/utils/buildQuizzLink'
 
-defineProps({
-  level: {
-    type: String,
-    required: true,
-  },
+defineProps({})
+
+const selectedWord = ref(null)
+const completed = ref([])
+const quizz = ref([])
+const answers = ref({})
+
+onMounted(async () => {
+  let tmp = await buildQuizzLink()
+  quizz.value = tmp.quizz
+  answers.value = tmp.answers
 })
 
-let words = ref([])
-
-let selectedWord = ref(null)
-let completed = ref([])
 const selectWord = (word, lang) => {
   if (selectedWord.value === null) {
     selectedWord.value = { word: word, lang: lang }
@@ -45,39 +47,17 @@ const selectWord = (word, lang) => {
 }
 
 const checkAnswer = (koreanGuess, englishGuess) => {
-  for (const { korean, english } of words.value) {
+  for (const { korean, english } of answers.value) {
     if (korean === koreanGuess && english === englishGuess) {
       return true
     }
   }
   return false
 }
-
-let quizz = ref([])
-
-axios.get('http://localhost:8000/quizz?level_eq=1').then((response) => {
-  words.value = response.data.answers
-  let krWords = []
-  let enWords = []
-
-  words.value.forEach((word) => {
-    krWords.push(word.korean)
-    enWords.push(word.english)
-  })
-
-  krWords = krWords
-    .map((value) => ({ value, sort: Math.random() }))
-    .sort((a, b) => a.sort - b.sort)
-    .map(({ value }) => value)
-
-  for (let index = 0; index < krWords.length; index++) {
-    quizz.value.push({ korean: krWords[index], english: enWords[index] })
-  }
-})
 </script>
 
 <template>
-  <h1>Level: {{ level }}</h1>
+  <h1>Quizz</h1>
   <div class="quizz">
     <div class="language-column">
       <div v-for="{ korean } in quizz" :key="{ korean }">

@@ -1,15 +1,18 @@
 <script setup>
-import QuizzLink from './components/QuizzLink.vue'
-import VocabularyGrid from './components/VocabularyGrid.vue'
+import MainHeader from './components/MainHeader.vue'
 </script>
 
 <template>
-  <header></header>
-
-  <main>
-    <QuizzLink level="1" />
-    <Suspense><VocabularyGrid /></Suspense>
-  </main>
+  <MainHeader />
+  <div class="container">
+    <RouterView />
+  </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.container {
+  place-items: center;
+  padding-top: 4rem;
+  max-width: calc(100vw - 4rem);
+}
+</style>
